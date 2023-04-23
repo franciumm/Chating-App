@@ -138,6 +138,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
                               (MediaQuery.of(context).size.height * 1 / 3),
                         ),
                         TextFormField(
+                          onChanged: (e) {
+                            Name = e;
+                            user.name = e;
+                          },
+                          controller: NameController,
                           keyboardType: TextInputType.name,
                           validator: (text) {
                             if (text!.trim() == '') {
@@ -147,7 +152,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
                           },
                           autofocus: true,
                           decoration:
-                              const InputDecoration(label: Text('Name')),
+                              const InputDecoration(label: Text('Username')),
                         ),
                         SizedBox(
                           height: 1 /
@@ -155,8 +160,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
                               (MediaQuery.of(context).size.height * 1 / 3),
                         ),
                         TextFormField(
-                          onChanged: (value) {
-                            email = value;
+                          onChanged: (e) {
+                            email = e;
+                            user.Email = e;
                           },
                           controller: EmailController,
                           keyboardType: TextInputType.emailAddress,
@@ -182,8 +188,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
                               (MediaQuery.of(context).size.height * 1 / 3),
                         ),
                         TextFormField(
-                          onChanged: (value) {
-                            Pass = value;
+                          onChanged: (e) {
+                            Pass = e;
                           },
                           controller: PassController,
                           obscureText: false,

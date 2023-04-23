@@ -1,26 +1,25 @@
 class UserModel {
+  String id;
+  String? photo;
+  String name;
+  String Email;
   UserModel({
-    this.id,
+    required this.id,
     this.photo,
-    this.name,
-    this.email,
+    required this.name,
+    required this.Email,
   });
 
-  int? id;
-  String? photo;
-  String? name;
-  String? email;
-
   Map<String, dynamic> toJson() => {
-        "id": id == null ? null : id,
+        "id": id,
         "photo": photo == null ? null : photo,
-        "nama": name == null ? null : name,
-        "email": email == null ? null : email,
+        "nama": name,
+        "email": Email,
       };
   fromJson(Map<String, dynamic> json) => {
-        id: json["id"] == null ? null : json["id"],
-        photo: json["photo"] == null ? null : json["photo"],
-        name: json["nama"] == null ? null : json["nama"],
-        email: json["email"] == null ? null : json["email"],
+        id: json["id"],
+        photo: json["photo"],
+        name: json["nama"],
+        Email: json["email"],
       };
 }

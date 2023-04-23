@@ -8,21 +8,52 @@ import '../../base.dart';
 import '../../models/utls/constants.dart';
 
 class CreateAccountViewModel extends ChangeNotifier {
-  String profpic = '';
   late Connector connect;
+  void CreateAccountWithFireAuthandStorage() async {
+    if (FormKey.currentState!.validate()) {
+      try {
+        connect.showLoading();
+        final credential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: Pass,
+        );
+        final FirebaseAuth auth = FirebaseAuth.instance;
+        final User? USER = auth.currentUser;
+        final uid = USER?.uid;
+        user.id = uid ?? '';
+        UploadImage();
+
+        connect.hideLoading();
+        connect.showMessage('Successfully Created');
+        connect.navtohome();
+        ;
+      } on FirebaseAuthException catch (e) {
+        if (e.code == weakpassword) {
+          connect.hideLoading();
+          connect.showMessage('The Password is weak');
+        } else if (e.code == EmailInUse) {
+          connect.hideLoading();
+          connect.showMessage('The account already exists for that email.');
+        }
+      } catch (e) {
+        connect.hideLoading();
+        connect.showMessage(e.toString());
+      }
+    }
+  }
+
   void UploadImage() async {
     try {
       if (image != null) {
-        Reference ref = FirebaseStorage.instance.ref().child('${UserId}.jpg');
+        Reference ref = FirebaseStorage.instance.ref().child('${user.id}.jpg');
         await ref.putFile(File(image!.path));
         ref.getDownloadURL().then((value) => {
-              profpic = value,
+              user.photo = value,
             });
-
-        print(profpic);
       }
     } catch (e) {
-      print(e);
+      connect.showMessage(e.toString());
     }
     notifyListeners();
   }
@@ -90,37 +121,5 @@ class CreateAccountViewModel extends ChangeNotifier {
         );
       },
     );
-  }
-
-  void CreateAccountWithFireAuthandStorage() async {
-    if (FormKey.currentState!.validate()) {
-      try {
-        connect.showLoading();
-        final credential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email,
-          password: Pass,
-        );
-        final FirebaseAuth auth = FirebaseAuth.instance;
-        final User? user = auth.currentUser;
-        final uid = user?.uid;
-        UserId = uid;
-        UploadImage();
-        connect.hideLoading();
-        connect.showMessage('Successfully Created');
-        connect.navtohome();
-      } on FirebaseAuthException catch (e) {
-        if (e.code == weakpassword) {
-          connect.hideLoading();
-          connect.showMessage('The Password is weak');
-        } else if (e.code == EmailInUse) {
-          connect.hideLoading();
-          connect.showMessage('The account already exists for that email.');
-        }
-      } catch (e) {
-        connect.hideLoading();
-        connect.showMessage(e.toString());
-      }
-    }
   }
 }

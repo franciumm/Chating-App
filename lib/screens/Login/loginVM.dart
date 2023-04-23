@@ -15,7 +15,6 @@ class LoginViewModel extends ChangeNotifier {
         email: email,
         password: Pass,
       );
-
       connect.hideLoading();
       connect.showMessage('Successfully Logged');
       connect.navtohome();

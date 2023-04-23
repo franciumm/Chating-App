@@ -87,9 +87,6 @@ class _LoginScreenState extends State<LoginScreen>
                             (MediaQuery.of(context).size.height * 1 / 3),
                       ),
                       TextFormField(
-                        onChanged: (value) {
-                          email = value;
-                        },
                         controller: EmailController,
                         keyboardType: TextInputType.emailAddress,
                         validator: (text) {
@@ -114,9 +111,6 @@ class _LoginScreenState extends State<LoginScreen>
                             (MediaQuery.of(context).size.height * 1 / 3),
                       ),
                       TextFormField(
-                        onChanged: (e) {
-                          Pass = e;
-                        },
                         controller: PassController,
                         obscureText: false,
                         keyboardType: TextInputType.visiblePassword,
