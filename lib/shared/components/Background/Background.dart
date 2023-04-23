@@ -17,12 +17,12 @@ class BackgroundContainer extends StatelessWidget {
         ),
         CustomPaint(
           size: Size(MediaQuery.of(context).size.width,
-              MediaQuery.of(context).size.height * 1 / 3),
+              MediaQuery.of(context).size.height * 2 / 8),
           painter: Painter2(),
         ),
         CustomPaint(
           size: Size(MediaQuery.of(context).size.width,
-              MediaQuery.of(context).size.height * 1 / 3),
+              MediaQuery.of(context).size.height * 2 / 8),
           painter: Painter1(),
         ),
       ],

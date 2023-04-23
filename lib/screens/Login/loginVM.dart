@@ -18,10 +18,9 @@ class LoginViewModel extends ChangeNotifier {
       user.id = auth.currentUser?.uid ?? '';
       connect.hideLoading();
       connect.showMessage('Successfully Logged');
-      user = (await ReadUser(user.id).then((value) {
-        connect.navtohome();
-      }))!;
-      ;
+      connect.navtohome();
+      user = (await ReadUser(user.id))!;
+      return;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         message = 'Password or email are Wrong';

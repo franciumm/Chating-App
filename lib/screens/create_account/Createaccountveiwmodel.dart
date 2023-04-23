@@ -23,7 +23,7 @@ class CreateAccountViewModel extends ChangeNotifier {
         var uid = auth.currentUser?.uid;
         user.id = uid ?? '';
         UploadImage();
-        print(user.photo);
+
         AddUserToData(user).then((value) => {
               connect.hideLoading(),
               connect.showMessage('Successfully Created'),
@@ -51,7 +51,6 @@ class CreateAccountViewModel extends ChangeNotifier {
         await ref.putFile(File(image!.path));
         ref.getDownloadURL().then((value) => {
               user.photo = value,
-              print(user.photo),
             });
       }
     } catch (e) {
@@ -72,7 +71,6 @@ class CreateAccountViewModel extends ChangeNotifier {
       connect.showMessage('Failed to pick an image : $e');
     }
     notifyListeners();
-    print('done');
   }
 
   Future getImage() async {
