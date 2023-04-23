@@ -1,4 +1,5 @@
 class UserModel {
+  static const COLLECTION_NAME = "Users";
   String id;
   String? photo;
   String name;
@@ -16,10 +17,11 @@ class UserModel {
         "nama": name,
         "email": Email,
       };
-  fromJson(Map<String, dynamic> json) => {
-        id: json["id"],
-        photo: json["photo"],
-        name: json["nama"],
-        Email: json["email"],
-      };
+  UserModel.fromJson(Map<String, dynamic> json)
+      : this(
+          id: json["id"],
+          photo: json["photo"],
+          name: json["nama"],
+          Email: json["email"],
+        );
 }

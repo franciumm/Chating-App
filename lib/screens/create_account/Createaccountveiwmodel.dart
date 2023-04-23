@@ -4,8 +4,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../DataBase/DataBase.dart';
 import '../../base.dart';
 import '../../models/utls/constants.dart';
+import '../Login/loginVM.dart';
 
 class CreateAccountViewModel extends ChangeNotifier {
   late Connector connect;
@@ -13,21 +15,20 @@ class CreateAccountViewModel extends ChangeNotifier {
     if (FormKey.currentState!.validate()) {
       try {
         connect.showLoading();
-        final credential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        final credential = await auth.createUserWithEmailAndPassword(
           email: email,
           password: Pass,
         );
-        final FirebaseAuth auth = FirebaseAuth.instance;
-        final User? USER = auth.currentUser;
-        final uid = USER?.uid;
+
+        var uid = auth.currentUser?.uid;
         user.id = uid ?? '';
         UploadImage();
-
-        connect.hideLoading();
-        connect.showMessage('Successfully Created');
-        connect.navtohome();
-        ;
+        print(user.photo);
+        AddUserToData(user).then((value) => {
+              connect.hideLoading(),
+              connect.showMessage('Successfully Created'),
+              connect.navtohome(),
+            });
       } on FirebaseAuthException catch (e) {
         if (e.code == weakpassword) {
           connect.hideLoading();
@@ -50,6 +51,7 @@ class CreateAccountViewModel extends ChangeNotifier {
         await ref.putFile(File(image!.path));
         ref.getDownloadURL().then((value) => {
               user.photo = value,
+              print(user.photo),
             });
       }
     } catch (e) {

@@ -1,3 +1,4 @@
+import 'package:chataapproutecourse/DataBase/DataBase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../base.dart';
@@ -6,18 +7,21 @@ import '../../models/utls/constants.dart';
 class LoginViewModel extends ChangeNotifier {
   String message = '';
   late Connector connect;
-  final FirebaseAuth auth = FirebaseAuth.instance;
+
   void Loginwithfirebaseauth() async {
     try {
-      print('object');
       connect.showLoading();
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final credential = await auth.signInWithEmailAndPassword(
         email: email,
         password: Pass,
       );
+      user.id = auth.currentUser?.uid ?? '';
       connect.hideLoading();
       connect.showMessage('Successfully Logged');
-      connect.navtohome();
+      user = (await ReadUser(user.id).then((value) {
+        connect.navtohome();
+      }))!;
+      ;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         message = 'Password or email are Wrong';
