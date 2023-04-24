@@ -2,6 +2,8 @@ import 'package:chataapproutecourse/models/utls/constants.dart';
 import 'package:chataapproutecourse/models/utls/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../Provider/UserProv.dart';
+
 CollectionReference<UserModel> getUserCollection() {
   return FirebaseFirestore.instance
       .collection('Users')
@@ -16,8 +18,9 @@ Future<void> AddUserToData(UserModel user) {
   return getUserCollection().doc(user.id).set(user);
 }
 
-Future<UserModel?> ReadUser(String id) async {
+ReadUser(String id) async {
   var Usser = await getUserCollection().doc(id).get();
-  user = Usser.data()!;
-  return Usser.data();
+  UserProvider.user = Usser.data()!;
+  print('The Email:${UserProvider.user.Email}');
+  print('The id:${UserProvider.user.id}');
 }

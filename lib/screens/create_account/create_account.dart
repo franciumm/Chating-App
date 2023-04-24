@@ -1,3 +1,4 @@
+import 'package:chataapproutecourse/Provider/UserProv.dart';
 import 'package:chataapproutecourse/screens/Login/LoginScreen.dart';
 import 'package:chataapproutecourse/screens/create_account/Createaccountveiwmodel.dart';
 import 'package:chataapproutecourse/screens/homeScreen/homeScreen.dart';
@@ -97,10 +98,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
                                           fit: BoxFit.cover,
                                         ),
                                       )
-                                    : user.photo != null
+                                    : UserProvider.user.photo != null
                                         ? CircleAvatar(
                                             backgroundImage: NetworkImage(
-                                                user.photo.toString()),
+                                                UserProvider.user.photo
+                                                    .toString()),
                                           )
                                         : const Icon(
                                             Icons.perm_identity,
@@ -140,7 +142,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
                         TextFormField(
                           onChanged: (e) {
                             Name = e;
-                            user.name = e;
                           },
                           controller: NameController,
                           keyboardType: TextInputType.name,
@@ -162,7 +163,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
                         TextFormField(
                           onChanged: (e) {
                             email = e;
-                            user.Email = e;
                           },
                           controller: EmailController,
                           keyboardType: TextInputType.emailAddress,
@@ -301,6 +301,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
   }
 
   CreatAccountFun() {
+    UserProvider.user.name = Name;
+    UserProvider.user.Email = email;
+
     Createaccount.CreateAccountWithFireAuthandStorage();
   }
 

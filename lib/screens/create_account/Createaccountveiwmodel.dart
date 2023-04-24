@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../DataBase/DataBase.dart';
+import '../../Provider/UserProv.dart';
 import '../../base.dart';
 import '../../models/utls/constants.dart';
-import '../Login/loginVM.dart';
 
 class CreateAccountViewModel extends ChangeNotifier {
   late Connector connect;
@@ -15,20 +15,16 @@ class CreateAccountViewModel extends ChangeNotifier {
     if (FormKey.currentState!.validate()) {
       try {
         connect.showLoading();
-        final credential = await auth.createUserWithEmailAndPassword(
+        final credential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
           password: Pass,
         );
 
-        var uid = auth.currentUser?.uid;
-        user.id = uid ?? '';
-        UploadImage();
-
-        AddUserToData(user).then((value) => {
-              connect.hideLoading(),
-              connect.showMessage('Successfully Created'),
-              connect.navtohome(),
-            });
+        var uid = UserProvider.auth.currentUser?.uid;
+        UserProvider.user.id = uid!;
+        UploadImageAndAddToDataBase();
+        print(UserProvider.auth);
       } on FirebaseAuthException catch (e) {
         if (e.code == weakpassword) {
           connect.hideLoading();
@@ -44,19 +40,25 @@ class CreateAccountViewModel extends ChangeNotifier {
     }
   }
 
-  void UploadImage() async {
+  UploadImageAndAddToDataBase() async {
     try {
       if (image != null) {
-        Reference ref = FirebaseStorage.instance.ref().child('${user.id}.jpg');
+        Reference ref =
+            FirebaseStorage.instance.ref().child('${UserProvider.user.id}.jpg');
+
         await ref.putFile(File(image!.path));
         ref.getDownloadURL().then((value) => {
-              user.photo = value,
+              UserProvider.user.photo = value,
+              AddUserToData(UserProvider.user).then((value) => {
+                    connect.hideLoading(),
+                    connect.showMessage('Successfully Created'),
+                    connect.navtohome(),
+                  }),
             });
       }
     } catch (e) {
       connect.showMessage(e.toString());
     }
-    notifyListeners();
   }
 
   Future getPhoto() async {
