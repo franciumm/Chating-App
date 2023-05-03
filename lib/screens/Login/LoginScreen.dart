@@ -1,9 +1,6 @@
 import 'package:chataapproutecourse/shared/components/Background/Background.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../Provider/UserProv.dart';
 import '../../base.dart';
 import '../../models/utls/constants.dart';
 import '../../shared/style/colors.dart';
@@ -21,11 +18,11 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin
     implements Connector {
-  GlobalKey<FormState> FormKey = GlobalKey();
+  GlobalKey<FormState> formKey = GlobalKey();
+
+  var LoginAccount;
   late Animation<double> animation;
   late AnimationController controller;
-  var LoginAccount;
-
   @override
   void initState() {
     super.initState();
@@ -64,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen>
                 )),
               ),
               body: Form(
-                key: FormKey,
+                key: formKey,
                 autovalidateMode: AutovalidateMode.always,
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -139,10 +136,9 @@ class _LoginScreenState extends State<LoginScreen>
                       ),
                       InkWell(
                         onTap: () {
-                          if (FormKey.currentState!.validate()) {
+                          if (formKey.currentState!.validate()) {
                             LoginAccount.Loginwithfirebaseauth();
                           }
-                          ;
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -181,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 context,
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        CreateAccountScreen()));
+                                        const CreateAccountScreen()));
                           },
                           child: Text(
                             'Create My Account',
@@ -210,7 +206,7 @@ class _LoginScreenState extends State<LoginScreen>
         builder: (context) => AlertDialog(
             shape: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
             backgroundColor: PRIMARY_COLOR,
-            title: Center(
+            title: const Center(
                 child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.white)))));
   }
@@ -226,21 +222,23 @@ class _LoginScreenState extends State<LoginScreen>
         style: TextStyle(color: PRIMARY_COLOR, fontWeight: FontWeight.bold),
       ),
       backgroundColor: Colors.white,
-      margin: EdgeInsets.all(50),
+      margin: const EdgeInsets.all(50),
       elevation: 30,
       action: SnackBarAction(
         textColor: PRIMARY_COLOR,
         label: 'OK',
         onPressed: () {},
       ),
-      duration: Duration(seconds: 4),
+      duration: const Duration(seconds: 4),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
   navtohome() {
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (ctx) => homeScreen()), (route) => false);
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (ctx) => const homeScreen()),
+        (route) => false);
   }
 }

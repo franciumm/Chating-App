@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:chataapproutecourse/models/utls/user_model.dart';
+import 'package:chataapproutecourse/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -9,10 +9,16 @@ File? image;
 String email = '';
 String Pass = '';
 String Name = '';
+var RoomNameController = TextEditingController();
+String RoomName = '';
+
+var RoomDesController = TextEditingController();
+String RoomDes = '';
+List<String> Catlist = <String>['Movies', 'Music', 'Sports'];
+String dropdownValue = Catlist.first;
 var PassController = TextEditingController();
 var EmailController = TextEditingController();
 var NameController = TextEditingController();
-GlobalKey<FormState> FormKey = GlobalKey();
 const pattern = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
     r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
     r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'

@@ -22,6 +22,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
   late Animation<double> animation;
   late AnimationController controller;
   var Createaccount;
+  GlobalKey<FormState> formKey = GlobalKey();
 
   @override
   void initState() {
@@ -56,7 +57,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
               title: const Text('Create Account'),
             ),
             body: Form(
-              key: FormKey,
+              key: formKey,
               child: Padding(
                 padding: const EdgeInsets.only(top: 20.0, left: 20, right: 20),
                 child: Column(
@@ -216,7 +217,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
                     ),
                     InkWell(
                       onTap: () => {
-                        CreatAccountFun(),
+                        if (formKey.currentState!.validate())
+                          {
+                            CreatAccountFun(),
+                          }
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),

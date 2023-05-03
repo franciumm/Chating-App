@@ -1,10 +1,11 @@
 import 'package:chataapproutecourse/Provider/UserProv.dart';
-import 'package:chataapproutecourse/models/utls/user_model.dart';
+import 'package:chataapproutecourse/models/user_model.dart';
 import 'package:chataapproutecourse/screens/Login/LoginScreen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../shared/components/Background/Background.dart';
+import '../Addroom/add_room.dart';
+import 'NavDrawer.dart';
 
 class homeScreen extends StatelessWidget {
   const homeScreen({Key? key}) : super(key: key);
@@ -13,28 +14,22 @@ class homeScreen extends StatelessWidget {
     return Stack(children: [
       const BackgroundContainer(),
       Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AddRoomScreen()));
+          },
+          child: Icon(Icons.add),
+        ),
         backgroundColor: Colors.transparent,
-        drawer: Drawer(),
+        drawer: NavDrawer(),
         appBar: AppBar(
-          title: Center(
+          title: const Center(
               child: Text(
             'Chat App',
             style: TextStyle(fontSize: 25),
           )),
           actions: [
-            IconButton(
-                onPressed: () {
-                  UserProvider.auth.signOut();
-                  UserProvider.user = UserModel(id: '', name: '', Email: '');
-                  print(
-                      'Logout------------------------------${UserProvider.user.id}');
-                  print(UserProvider.auth);
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (ctx) => LoginScreen()),
-                      (route) => false);
-                },
-                icon: Icon(Icons.logout)),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Icon(

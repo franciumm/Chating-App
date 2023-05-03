@@ -12,31 +12,29 @@ import '../../models/utls/constants.dart';
 class CreateAccountViewModel extends ChangeNotifier {
   late Connector connect;
   void CreateAccountWithFireAuthandStorage() async {
-    if (FormKey.currentState!.validate()) {
-      try {
-        connect.showLoading();
-        final credential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email,
-          password: Pass,
-        );
+    try {
+      connect.showLoading();
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: Pass,
+      );
 
-        var uid = UserProvider.auth.currentUser?.uid;
-        UserProvider.user.id = uid!;
-        UploadImageAndAddToDataBase();
-        print(UserProvider.auth);
-      } on FirebaseAuthException catch (e) {
-        if (e.code == weakpassword) {
-          connect.hideLoading();
-          connect.showMessage('The Password is weak');
-        } else if (e.code == EmailInUse) {
-          connect.hideLoading();
-          connect.showMessage('The account already exists for that email.');
-        }
-      } catch (e) {
+      var uid = UserProvider.auth.currentUser?.uid;
+      UserProvider.user.id = uid!;
+      UploadImageAndAddToDataBase();
+      print(UserProvider.auth);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == weakpassword) {
         connect.hideLoading();
-        connect.showMessage(e.toString());
+        connect.showMessage('The Password is weak');
+      } else if (e.code == EmailInUse) {
+        connect.hideLoading();
+        connect.showMessage('The account already exists for that email.');
       }
+    } catch (e) {
+      connect.hideLoading();
+      connect.showMessage(e.toString());
     }
   }
 
