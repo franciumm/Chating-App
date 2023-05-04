@@ -16,7 +16,8 @@ class addRoomVm extends ChangeNotifier {
     connect.showLoading();
     AddRoomToData(room).then((value) {
       connect.hideLoading();
-      connect.navtohome();
+      connect.hideLoading();
+
       RoomDes = '';
       RoomName = '';
       RoomDesController.clear();

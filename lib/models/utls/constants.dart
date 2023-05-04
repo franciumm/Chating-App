@@ -1,8 +1,7 @@
 import 'dart:io';
-import 'package:chataapproutecourse/models/user_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
+bool userindatabase = true;
 String weakpassword = 'weak-password';
 String EmailInUse = 'email-already-in-use';
 File? image;

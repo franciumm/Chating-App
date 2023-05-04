@@ -37,8 +37,8 @@ Widget Drawerhead(BuildContext context) => Container(
                                 UserProvider.user.photo.toString()),
                           )
                         : const Icon(
-                            Icons.perm_identity,
-                            size: 90,
+                            Icons.account_circle_outlined,
+                            size: 100,
                             color: Colors.black87,
                           ),
                   ),

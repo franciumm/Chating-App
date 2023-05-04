@@ -1,7 +1,9 @@
 import 'package:chataapproutecourse/models/user_model.dart';
+import 'package:chataapproutecourse/screens/homeScreen/homeVm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../Provider/UserProv.dart';
 import '../models/category.dart';
+import '../models/utls/constants.dart';
 
 CollectionReference<UserModel> getUserCollection() {
   return FirebaseFirestore.instance
@@ -19,7 +21,14 @@ Future<void> AddUserToData(UserModel user) {
 
 ReadUser(String id) async {
   var Usser = await getUserCollection().doc(id).get();
-  UserProvider.user = Usser.data()!;
+
+  if (Usser.data() != null) {
+    UserProvider.user = Usser.data()!;
+    userindatabase = true;
+  } else {
+    userindatabase = false;
+  }
+
   print('The Email:${UserProvider.user.Email}');
   print('The id:${UserProvider.user.id}');
 }
@@ -36,4 +45,10 @@ Future<void> AddRoomToData(Rooms Room) {
   var docRef = collection.doc();
   Room.id = docRef.id;
   return docRef.set(Room);
+}
+
+Stream<QuerySnapshot<Rooms>> RoomsRead() {
+  var SnapRooms = getRoomsCollections().get();
+  var FutureRoom = getRoomsCollections().snapshots();
+  return FutureRoom;
 }
