@@ -19,6 +19,8 @@ class CreateAccountScreen extends StatefulWidget {
 class _CreateAccountScreenState extends State<CreateAccountScreen>
     with SingleTickerProviderStateMixin
     implements Connector {
+  bool passvision = true;
+  var passIcon2 = const Icon(Icons.remove_red_eye);
   late Animation<double> animation;
   late AnimationController controller;
   var Createaccount;
@@ -193,7 +195,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
                             Pass = e;
                           },
                           controller: PassController,
-                          obscureText: false,
                           validator: (text) {
                             if (text!.trim() == '') {
                               return 'Please Enter Password ';
@@ -202,8 +203,27 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
                           },
                           keyboardType: TextInputType.visiblePassword,
                           autofocus: true,
-                          decoration:
-                              const InputDecoration(label: Text('Password')),
+                          obscureText: passvision,
+                          decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    passvision = !passvision;
+                                    if (passvision == true) {
+                                      passIcon2 =
+                                          const Icon(Icons.remove_red_eye);
+                                    } else if (passvision == false) {
+                                      passIcon2 = const Icon(
+                                          Icons.remove_red_eye_outlined);
+                                    }
+                                  });
+                                },
+                                icon: passIcon2,
+                                splashColor: Colors.grey[200],
+                                splashRadius: 20,
+                                highlightColor: Colors.black87,
+                              ),
+                              label: Text('Password')),
                         ),
                         SizedBox(
                           height: 1 /
