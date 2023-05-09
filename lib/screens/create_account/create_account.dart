@@ -1,5 +1,4 @@
 import 'package:chataapproutecourse/Provider/UserProv.dart';
-import 'package:chataapproutecourse/screens/Login/LoginScreen.dart';
 import 'package:chataapproutecourse/screens/create_account/Createaccountveiwmodel.dart';
 import 'package:chataapproutecourse/screens/homeScreen/homeScreen.dart';
 import 'package:chataapproutecourse/shared/components/Background/Background.dart';
@@ -101,10 +100,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
                                           fit: BoxFit.cover,
                                         ),
                                       )
-                                    : UserProvider.user.photo != null
+                                    : UserProvider.user?.photo != null
                                         ? CircleAvatar(
                                             backgroundImage: NetworkImage(
-                                                UserProvider.user.photo
+                                                UserProvider.user!.photo
                                                     .toString()),
                                           )
                                         : const Icon(
@@ -325,8 +324,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
   }
 
   CreatAccountFun() {
-    UserProvider.user.name = Name;
-    UserProvider.user.Email = email;
+    UserProvider.user?.name = Name;
+    UserProvider.user?.Email = email;
 
     Createaccount.CreateAccountWithFireAuthandStorage();
   }

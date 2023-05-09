@@ -6,12 +6,14 @@ class Rooms {
   String desc;
   String cat;
   late String id;
-  Rooms(
-      {required this.ownerid,
-      required this.name,
-      required this.desc,
-      required this.cat,
-      id});
+
+  Rooms({
+    required this.ownerid,
+    required this.name,
+    required this.desc,
+    required this.cat,
+    this.id = '',
+  });
 
   Map<String, dynamic> toJson() =>
       {"ownerid": ownerid, "id": id, "name": name, "desc": desc, "cat": cat};

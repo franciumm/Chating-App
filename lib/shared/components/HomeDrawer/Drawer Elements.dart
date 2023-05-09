@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Provider/UserProv.dart';
@@ -31,10 +32,10 @@ Widget Drawerhead(BuildContext context) => Container(
                           color: Theme.of(context).primaryColor, width: 1),
                       shape: BoxShape.circle,
                     ),
-                    child: UserProvider.user.photo != null
+                    child: UserProvider.user?.photo != null
                         ? CircleAvatar(
                             backgroundImage: NetworkImage(
-                                UserProvider.user.photo.toString()),
+                                UserProvider.user!.photo.toString()),
                           )
                         : const Icon(
                             Icons.account_circle_outlined,
@@ -45,7 +46,7 @@ Widget Drawerhead(BuildContext context) => Container(
                 ),
               ),
               Text(
-                UserProvider.user.name,
+                UserProvider.user?.name ?? '',
                 style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,
                     fontSize: 25,
@@ -81,7 +82,7 @@ Widget DrawerBody(BuildContext context) => Column(
           ),
           ListTile(
             onTap: () {
-              UserProvider.auth.signOut();
+              FirebaseAuth.instance.signOut();
               UserProvider.user = UserModel(id: '', name: '', Email: '');
 
               Navigator.pushAndRemoveUntil(
@@ -89,7 +90,7 @@ Widget DrawerBody(BuildContext context) => Column(
                   MaterialPageRoute(builder: (ctx) => LoginScreen()),
                   (route) => false);
             },
-            title: Text(
+            title: const Text(
               'Log out',
               style: TextStyle(color: Colors.black),
             ),

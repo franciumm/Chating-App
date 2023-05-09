@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 
+import '../category.dart';
+
 bool userindatabase = true;
 String weakpassword = 'weak-password';
 String EmailInUse = 'email-already-in-use';
@@ -10,6 +12,7 @@ String Pass = '';
 String Name = '';
 var RoomNameController = TextEditingController();
 String RoomName = '';
+var MessageController = TextEditingController();
 
 var RoomDesController = TextEditingController();
 String RoomDes = '';

@@ -1,6 +1,7 @@
 import 'package:chataapproutecourse/models/category.dart';
 import 'package:chataapproutecourse/models/utls/constants.dart';
 import 'package:chataapproutecourse/screens/Addroom/add_room_vm.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -193,9 +194,9 @@ class _AddRoomScreenState extends State<AddRoomScreen>
                               onTap: () {
                                 if (FormKey.currentState!.validate()) {
                                   AddRoom.RoomAddToFirestore(Rooms(
-                                      ownerid:
-                                          UserProvider.auth.currentUser?.uid ??
-                                              '',
+                                      ownerid: FirebaseAuth
+                                              .instance.currentUser?.uid ??
+                                          '',
                                       name: RoomName,
                                       desc: RoomDes,
                                       cat: dropdownValue));

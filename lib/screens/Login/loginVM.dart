@@ -13,13 +13,13 @@ class LoginViewModel extends ChangeNotifier {
   void Loginwithfirebaseauth() async {
     try {
       connect.showLoading();
-      final credential = await UserProvider.auth.signInWithEmailAndPassword(
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: Pass,
       );
-      UserProvider.user.id = UserProvider.auth.currentUser?.uid ?? '';
+      UserProvider.user?.id = FirebaseAuth.instance.currentUser?.uid ?? '';
       connect.hideLoading();
-      await ReadUser(UserProvider.user.id).then((value) => {
+      await ReadUser(UserProvider.user?.id).then((value) => {
             if (userindatabase == true)
               {
                 connect.showMessage('Successfully Logged In'),

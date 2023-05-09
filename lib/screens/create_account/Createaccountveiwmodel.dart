@@ -20,10 +20,10 @@ class CreateAccountViewModel extends ChangeNotifier {
         password: Pass,
       );
 
-      var uid = UserProvider.auth.currentUser?.uid;
-      UserProvider.user.id = uid!;
+      var uid = FirebaseAuth.instance.currentUser?.uid;
+      UserProvider.user?.id = uid!;
       UploadImageAndAddToDataBase();
-      print(UserProvider.auth);
+      print(UserProvider.user?.id);
     } on FirebaseAuthException catch (e) {
       if (e.code == weakpassword) {
         connect.hideLoading();
@@ -41,12 +41,13 @@ class CreateAccountViewModel extends ChangeNotifier {
   UploadImageAndAddToDataBase() async {
     try {
       if (image != null) {
-        Reference ref =
-            FirebaseStorage.instance.ref().child('${UserProvider.user.id}.jpg');
+        Reference ref = FirebaseStorage.instance
+            .ref()
+            .child('${UserProvider.user?.id}.jpg');
 
         await ref.putFile(File(image!.path));
         ref.getDownloadURL().then((value) => {
-              UserProvider.user.photo = value,
+              UserProvider.user?.photo = value,
               AddUserToData(UserProvider.user).then((value) => {
                     connect.hideLoading(),
                     connect.showMessage('Successfully Created'),

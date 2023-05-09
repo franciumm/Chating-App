@@ -1,11 +1,13 @@
 import 'package:chataapproutecourse/DataBase/DataBase.dart';
+import 'package:chataapproutecourse/Provider/UserProv.dart';
 import 'package:chataapproutecourse/shared/components/Room/RoomItem.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../base.dart';
-import '../../models/category.dart';
+
 import '../../shared/components/Background/Background.dart';
 import '../Addroom/add_room.dart';
 import 'NavDrawer.dart';
@@ -27,6 +29,8 @@ class _homeScreenState extends State<homeScreen>
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => ChecckJoinedRoom(UserProvider.user?.id ?? ''));
     super.initState();
     controller = AnimationController(
       duration: const Duration(seconds: 0),
@@ -38,6 +42,7 @@ class _homeScreenState extends State<homeScreen>
           controller.reverse();
         }
       });
+    UserProvider.user = ReadUser(FirebaseAuth.instance.currentUser?.uid);
   }
 
   @override
@@ -60,7 +65,7 @@ class _homeScreenState extends State<homeScreen>
                 },
                 child: Icon(Icons.add),
               ),
-              drawer: NavDrawer(),
+              drawer: const NavDrawer(),
               backgroundColor: Colors.transparent,
               body: NestedScrollView(
                 headerSliverBuilder:
@@ -101,47 +106,93 @@ class _homeScreenState extends State<homeScreen>
                     ),
                   ];
                 },
-                body: TabBarView(children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [],
-                  ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.03,
-                      ),
-                      Expanded(
-                        child: StreamBuilder<QuerySnapshot<Rooms>>(
-                            stream: RoomsRead(),
-                            builder: (context, snapshot) {
-                              var snaprooms = snapshot.data?.docs
-                                      .map((e) => e.data())
-                                      .toList() ??
-                                  [];
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-                              return GridView.builder(
-                                itemCount: snaprooms.length,
-                                itemBuilder: (conetxt, index) =>
-                                    RoomItem(snaprooms[index]),
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 2,
-                                  crossAxisSpacing: 2,
-                                  childAspectRatio: 9 / 10,
+                body: ChangeNotifierProvider(
+                  create: (BuildContext context) => HomeVM(),
+                  builder: (context, child) {
+                    return TabBarView(
+                        dragStartBehavior: DragStartBehavior.down,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.03,
+                              ),
+                              Expanded(
+                                child: FutureBuilder(
+                                  future: ChecckJoinedRoom(
+                                      UserProvider.user?.id ?? ''),
+                                  builder: (c, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return GridView.builder(
+                                        itemCount: snapshot.data?.length,
+                                        itemBuilder: (conetxt, index) {
+                                          return RoomItem(
+                                              snapshot.data![index]!);
+                                        },
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          mainAxisSpacing: 2,
+                                          crossAxisSpacing: 2,
+                                          childAspectRatio: 9 / 10,
+                                        ),
+                                      );
+                                    } else {
+                                      return CircularProgressIndicator();
+                                    }
+                                  },
                                 ),
-                              );
-                            }),
-                      ),
-                    ],
-                  )
-                ]),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.03,
+                              ),
+                              Expanded(
+                                child: StreamBuilder(
+                                    stream: RoomsRead(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+                                      if (snapshot.hasError) {
+                                        return const Center(
+                                          child: Text('Something went wrong'),
+                                        );
+                                      }
+                                      var snapRoomsList = snapshot.data?.docs
+                                              .map((e) => e.data())
+                                              .toList() ??
+                                          [];
+
+                                      return GridView.builder(
+                                        itemCount: snapRoomsList.length,
+                                        itemBuilder: (conetxt, index) {
+                                          return RoomItem(snapRoomsList[index]);
+                                        },
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          mainAxisSpacing: 2,
+                                          crossAxisSpacing: 2,
+                                          childAspectRatio: 9 / 10,
+                                        ),
+                                      );
+                                    }),
+                              ),
+                            ],
+                          )
+                        ]);
+                  },
+                ),
               ),
             )
           ]);
