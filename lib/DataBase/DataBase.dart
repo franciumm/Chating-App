@@ -63,7 +63,7 @@ Future<void> addMessageToData(Message message) {
 }
 
 Stream<QuerySnapshot<Message>> readMessage(String roomId) {
-  return getMessagesCollection(roomId).snapshots();
+  return getMessagesCollection(roomId).orderBy("dateTime").snapshots();
 }
 
 Future<void> AddRoomToData(Rooms Room) {

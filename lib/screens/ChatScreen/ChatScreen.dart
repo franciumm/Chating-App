@@ -1,5 +1,8 @@
+import 'package:chataapproutecourse/models/Message.dart';
 import 'package:chataapproutecourse/screens/ChatScreen/ChatScreenVM.dart';
 import 'package:chataapproutecourse/shared/components/Background/Background.dart';
+import 'package:chataapproutecourse/shared/components/MessageWidget/messagewidget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -49,8 +52,27 @@ class ChatScreen extends StatelessWidget implements Connector {
                 child: Column(
                   children: [
                     Expanded(
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.65,
+                      child: StreamBuilder<QuerySnapshot<Message>>(
+                        stream: Chatvm.getMessage(),
+                        builder: (ctx, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            return Text('some Thing went wrong');
+                          }
+
+                          var Messages = snapshot.data?.docs
+                                  .map((e) => e.data())
+                                  .toList() ??
+                              [];
+                          return ListView.builder(
+                            itemBuilder: (ctx, index) {
+                              return MessageWidget(Messages[index]);
+                            },
+                            itemCount: Messages.length,
+                          );
+                        },
                       ),
                     ),
                     Padding(

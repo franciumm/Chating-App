@@ -1,6 +1,7 @@
 import 'package:chataapproutecourse/DataBase/DataBase.dart';
 import 'package:chataapproutecourse/Provider/UserProv.dart';
 import 'package:chataapproutecourse/models/Message.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../base.dart';
@@ -21,5 +22,9 @@ class ChatScreenVm extends ChangeNotifier {
     )).then((value) {
       MessageController.clear();
     });
+  }
+
+  Stream<QuerySnapshot<Message>> getMessage() {
+    return readMessage(rooms.id);
   }
 }

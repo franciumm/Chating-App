@@ -91,15 +91,6 @@ class _homeScreenState extends State<homeScreen>
                         'Chat App',
                         style: TextStyle(fontSize: 25),
                       )),
-                      actions: [
-                        Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Icon(
-                            Icons.search,
-                            size: 30,
-                          ),
-                        )
-                      ],
                       backgroundColor: Colors.transparent,
                       elevation: 0,
                     ),
