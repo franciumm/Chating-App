@@ -29,8 +29,8 @@ class _homeScreenState extends State<homeScreen>
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ChecckJoinedRoom(UserProvider.user?.id ?? ''));
+    WidgetsBinding.instance.addPostFrameCallback((_) =>
+        UserProvider.user = ReadUser(FirebaseAuth.instance.currentUser?.uid));
     super.initState();
     controller = AnimationController(
       duration: const Duration(seconds: 0),
@@ -42,7 +42,6 @@ class _homeScreenState extends State<homeScreen>
           controller.reverse();
         }
       });
-    UserProvider.user = ReadUser(FirebaseAuth.instance.currentUser?.uid);
   }
 
   @override
@@ -106,93 +105,96 @@ class _homeScreenState extends State<homeScreen>
                     ),
                   ];
                 },
-                body: ChangeNotifierProvider(
-                  create: (BuildContext context) => HomeVM(),
-                  builder: (context, child) {
-                    return TabBarView(
-                        dragStartBehavior: DragStartBehavior.down,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03,
-                              ),
-                              Expanded(
-                                child: FutureBuilder(
-                                  future: ChecckJoinedRoom(
-                                      UserProvider.user?.id ?? ''),
-                                  builder: (c, snapshot) {
-                                    if (snapshot.hasData) {
-                                      return GridView.builder(
-                                        itemCount: snapshot.data?.length,
-                                        itemBuilder: (conetxt, index) {
-                                          return RoomItem(
-                                              snapshot.data![index]!);
-                                        },
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          mainAxisSpacing: 2,
-                                          crossAxisSpacing: 2,
-                                          childAspectRatio: 9 / 10,
-                                        ),
-                                      );
-                                    } else {
-                                      return CircularProgressIndicator();
-                                    }
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03,
-                              ),
-                              Expanded(
-                                child: StreamBuilder(
-                                    stream: RoomsRead(),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      }
-                                      if (snapshot.hasError) {
-                                        return const Center(
-                                          child: Text('Something went wrong'),
-                                        );
-                                      }
-                                      var snapRoomsList = snapshot.data?.docs
-                                              .map((e) => e.data())
-                                              .toList() ??
-                                          [];
+                body: TabBarView(
+                    dragStartBehavior: DragStartBehavior.down,
+                    children: [
+                      RefreshIndicator(
+                        onRefresh: () async {
+                          setState(() {});
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.03,
+                            ),
+                            FutureBuilder(
+                              future:
+                                  ChecckJoinedRoom(UserProvider.user?.id ?? ''),
+                              builder: (c, snapshot) {
+                                if (snapshot.hasData) {
+                                  return Expanded(
+                                    child: GridView.builder(
+                                      itemCount: snapshot.data?.length,
+                                      itemBuilder: (conetxt, index) {
+                                        return RoomItem(snapshot.data![index]!);
+                                      },
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 2,
+                                        crossAxisSpacing: 2,
+                                        childAspectRatio: 9 / 10,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      RefreshIndicator(
+                        onRefresh: () async {
+                          setState(() {});
+                        },
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.03,
+                            ),
+                            StreamBuilder(
+                                stream: RoomsRead(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                  if (snapshot.hasError) {
+                                    return const Center(
+                                      child: Text('Something went wrong'),
+                                    );
+                                  }
+                                  var snapRoomsList = snapshot.data?.docs
+                                          .map((e) => e.data())
+                                          .toList() ??
+                                      [];
 
-                                      return GridView.builder(
-                                        itemCount: snapRoomsList.length,
-                                        itemBuilder: (conetxt, index) {
-                                          return RoomItem(snapRoomsList[index]);
-                                        },
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          mainAxisSpacing: 2,
-                                          crossAxisSpacing: 2,
-                                          childAspectRatio: 9 / 10,
-                                        ),
-                                      );
-                                    }),
-                              ),
-                            ],
-                          )
-                        ]);
-                  },
-                ),
+                                  return Expanded(
+                                    child: GridView.builder(
+                                      itemCount: snapRoomsList.length,
+                                      itemBuilder: (conetxt, index) {
+                                        return RoomItem(snapRoomsList[index]);
+                                      },
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 2,
+                                        crossAxisSpacing: 2,
+                                        childAspectRatio: 9 / 10,
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          ],
+                        ),
+                      )
+                    ]),
               ),
             )
           ]);

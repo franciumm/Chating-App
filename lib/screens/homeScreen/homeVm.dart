@@ -9,6 +9,6 @@ class HomeVM extends ChangeNotifier {
 
   @override
   void notifyListeners() {
-    super.notifyListeners();
+    notifyListeners();
   }
 }
