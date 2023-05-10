@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       routes: {
         'ChatScreen': (c) => ChatScreen(),
+        'HomeScreen': (c) => homeScreen(),
       },
       theme: ThemeData.light(),
       debugShowCheckedModeBanner: false,

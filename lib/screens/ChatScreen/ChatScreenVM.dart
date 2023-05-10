@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../base.dart';
 import '../../models/category.dart';
+import '../../models/utls/constants.dart';
 
 class ChatScreenVm extends ChangeNotifier {
   late Connector connect;
@@ -17,6 +18,8 @@ class ChatScreenVm extends ChangeNotifier {
       roomId: rooms.id,
       senderId: UserProvider.user!.id,
       senderName: UserProvider.user!.name,
-    ));
+    )).then((value) {
+      MessageController.clear();
+    });
   }
 }

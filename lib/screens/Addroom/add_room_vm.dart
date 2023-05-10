@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import '../../DataBase/DataBase.dart';
+import '../../Provider/UserProv.dart';
 import '../../base.dart';
 import '../../models/category.dart';
 import '../../models/utls/constants.dart';
@@ -14,7 +15,9 @@ class addRoomVm extends ChangeNotifier {
 
   RoomAddToFirestore(Rooms room) {
     connect.showLoading();
+
     AddRoomToData(room).then((value) {
+      addjoineduserToData(UserProvider.user?.id ?? '', room.id);
       connect.hideLoading();
       connect.hideLoading();
 

@@ -6,9 +6,4 @@ import '../../base.dart';
 
 class HomeVM extends ChangeNotifier {
   late Connector connect;
-
-  @override
-  void notifyListeners() {
-    notifyListeners();
-  }
 }

@@ -256,9 +256,9 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   navtohome() {
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (ctx) => const homeScreen()),
-        (route) => false);
+    Navigator.pushReplacementNamed(
+      context,
+      'HomeScreen',
+    );
   }
 }
