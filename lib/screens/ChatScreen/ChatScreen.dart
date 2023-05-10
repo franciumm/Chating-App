@@ -12,6 +12,7 @@ import '../../models/utls/constants.dart';
 
 class ChatScreen extends StatelessWidget implements Connector {
   var Chatvm;
+  final ScrollController _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +67,18 @@ class ChatScreen extends StatelessWidget implements Connector {
                                   .map((e) => e.data())
                                   .toList() ??
                               [];
+                          WidgetsBinding.instance
+                              .addPostFrameCallback((timeStamp) {
+                            if (_controller.hasClients) {
+                              _controller.animateTo(
+                                  _controller.position.maxScrollExtent,
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeInOut);
+                            }
+                          });
+
                           return ListView.builder(
+                            controller: _controller,
                             itemBuilder: (ctx, index) {
                               return MessageWidget(Messages[index]);
                             },
