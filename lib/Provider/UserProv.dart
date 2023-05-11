@@ -4,7 +4,7 @@ import 'package:chataapproutecourse/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 
-class UserProvider extends ChangeNotifier {
+class UserProvider {
   static User? Firebaseuser;
   static UserModel? user;
 }

@@ -1,17 +1,14 @@
-import 'package:chataapproutecourse/DataBase/DataBase.dart';
 import 'package:chataapproutecourse/screens/ChatScreen/ChatScreen.dart';
 import 'package:chataapproutecourse/screens/Login/LoginScreen.dart';
 import 'package:chataapproutecourse/screens/homeScreen/homeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-
-import 'Provider/UserProv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
@@ -24,6 +21,7 @@ class MyApp extends StatelessWidget {
       routes: {
         'ChatScreen': (c) => ChatScreen(),
         'HomeScreen': (c) => homeScreen(),
+        'Login': (c) => LoginScreen(),
       },
       theme: ThemeData.light(),
       debugShowCheckedModeBanner: false,

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chataapproutecourse/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -11,19 +12,20 @@ import '../../models/utls/constants.dart';
 
 class CreateAccountViewModel extends ChangeNotifier {
   late Connector connect;
-  void CreateAccountWithFireAuthandStorage() async {
+  void CreateAccountWithFireAuthandStorage() {
     try {
       connect.showLoading();
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final credential = FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
         email: email,
         password: Pass,
-      );
+      )
+          .then((value) {
+        print('The UId${FirebaseAuth.instance.currentUser!.uid}');
+        print('The Email${email}');
 
-      var uid = FirebaseAuth.instance.currentUser?.uid;
-      UserProvider.user?.id = uid!;
-      UploadImageAndAddToDataBase();
-      print(UserProvider.user?.id);
+        AddingUserToDB('');
+      });
     } on FirebaseAuthException catch (e) {
       if (e.code == weakpassword) {
         connect.hideLoading();
@@ -38,24 +40,39 @@ class CreateAccountViewModel extends ChangeNotifier {
     }
   }
 
-  UploadImageAndAddToDataBase() async {
+  AddingUserToDB(String value) {
+    AddUserToData(UserModel(
+            name: NameController.text,
+            Email: email,
+            photo: value,
+            id: FirebaseAuth.instance.currentUser!.uid))
+        .then((value) {
+      connect.hideLoading();
+      connect.showMessage('Successfully Created');
+      connect.navtohome();
+      UploadImageAndAddToDataBase();
+    });
+  }
+
+  UploadImageAndAddToDataBase() {
     try {
       if (image != null) {
         Reference ref = FirebaseStorage.instance
             .ref()
-            .child('${UserProvider.user?.id}.jpg');
-
-        await ref.putFile(File(image!.path));
-        ref.getDownloadURL().then((value) => {
-              UserProvider.user?.photo = value,
-              AddUserToData(UserProvider.user).then((value) => {
-                    connect.hideLoading(),
-                    connect.showMessage('Successfully Created'),
-                    connect.navtohome(),
-                  }),
-            });
+            .child('${FirebaseAuth.instance.currentUser?.uid}.jpg');
+        ref.putFile(File(image!.path)).then((p0) {
+          ref.getDownloadURL().then((value) {
+            AddingUserToDB(value);
+            if (UserProvider.user != null) {
+              getUserCollection()
+                  .doc(FirebaseAuth.instance.currentUser?.uid)
+                  .set(UserProvider.user!);
+            }
+          });
+        });
       }
     } catch (e) {
+      connect.hideLoading();
       connect.showMessage(e.toString());
     }
   }

@@ -324,9 +324,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen>
   }
 
   CreatAccountFun() {
-    UserProvider.user?.name = Name;
-    UserProvider.user?.Email = email;
-
     Createaccount.CreateAccountWithFireAuthandStorage();
   }
 

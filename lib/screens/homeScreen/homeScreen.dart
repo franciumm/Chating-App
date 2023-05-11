@@ -29,8 +29,8 @@ class _homeScreenState extends State<homeScreen>
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) =>
-        UserProvider.user = ReadUser(FirebaseAuth.instance.currentUser?.uid));
+    WidgetsBinding.instance.addPostFrameCallback((_) => UserProvider.user =
+        ReadUser(FirebaseAuth.instance.currentUser?.uid, context));
     super.initState();
     controller = AnimationController(
       duration: const Duration(seconds: 0),

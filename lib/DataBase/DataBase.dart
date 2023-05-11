@@ -1,6 +1,8 @@
 import 'package:chataapproutecourse/models/user_model.dart';
 import 'package:chataapproutecourse/screens/homeScreen/homeVm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import '../Provider/UserProv.dart';
 import '../models/category.dart';
 import '../models/Message.dart';
@@ -19,20 +21,21 @@ CollectionReference<UserModel> getUserCollection() {
 }
 
 Future<void> AddUserToData(UserModel? user) {
-  return getUserCollection().doc(user?.id).set(user!);
+  return getUserCollection()
+      .doc(FirebaseAuth.instance.currentUser?.uid)
+      .set(user!);
 }
 
-ReadUser(String? id) {
+ReadUser(String? id, BuildContext context) {
   var Usser = getUserCollection().doc(id).get().then((value) {
     if (value.data() != null) {
       UserProvider.user = value.data()!;
       userindatabase = true;
     } else {
       userindatabase = false;
+      FirebaseAuth.instance.signOut();
+      Navigator.pushReplacementNamed(context, 'Login');
     }
-
-    print('The Email:${UserProvider.user?.Email}');
-    print('The id:${UserProvider.user?.id}');
   });
 }
 

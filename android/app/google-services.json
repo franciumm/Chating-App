@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "1034154063025",
-    "project_id": "chatap-1c13a",
-    "storage_bucket": "chatap-1c13a.appspot.com"
+    "project_number": "400949463645",
+    "project_id": "chatapp-d4773",
+    "storage_bucket": "chatapp-d4773.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1034154063025:android:069910d5c78b51c187de90",
+        "mobilesdk_app_id": "1:400949463645:android:eb14b14d7046b023badbb4",
         "android_client_info": {
           "package_name": "com.example.chataapproutecourse"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1034154063025-ek72p900fnt4guaokjjp3h55g07b95mc.apps.googleusercontent.com",
+          "client_id": "400949463645-l4jvssigkl4aopmnkd4gmn5kh1m5g05o.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDCptT_YoCXephzCof6ah339H578IJ5uL4"
+          "current_key": "AIzaSyBLt6kYHGo4-Ypm0j_0FsL4AJGZhG2ZEXM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1034154063025-ek72p900fnt4guaokjjp3h55g07b95mc.apps.googleusercontent.com",
+              "client_id": "400949463645-l4jvssigkl4aopmnkd4gmn5kh1m5g05o.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "1034154063025-cop247slnhg350b88fc40c1sd2shefoh.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.chataapproutecourse"
-              }
             }
           ]
         }

@@ -4,6 +4,16 @@ import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
+/// Default [FirebaseOptions] for use with your Firebase apps.
+///
+/// Example:
+/// ```dart
+/// import 'firebase_options.dart';
+/// // ...
+/// await Firebase.initializeApp(
+///   options: DefaultFirebaseOptions.currentPlatform,
+/// );
+/// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -40,21 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDCptT_YoCXephzCof6ah339H578IJ5uL4',
-    appId: '1:1034154063025:android:069910d5c78b51c187de90',
-    messagingSenderId: '1034154063025',
-    projectId: 'chatap-1c13a',
-    storageBucket: 'chatap-1c13a.appspot.com',
+    apiKey: 'AIzaSyBLt6kYHGo4-Ypm0j_0FsL4AJGZhG2ZEXM',
+    appId: '1:400949463645:android:eb14b14d7046b023badbb4',
+    messagingSenderId: '400949463645',
+    projectId: 'chatapp-d4773',
+    storageBucket: 'chatapp-d4773.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCX_eLaCYrYntLfljx9vyGl8KGPdq4sDDE',
-    appId: '1:1034154063025:ios:be89acfb04a0a0a787de90',
-    messagingSenderId: '1034154063025',
-    projectId: 'chatap-1c13a',
-    storageBucket: 'chatap-1c13a.appspot.com',
-    iosClientId:
-        '1034154063025-cop247slnhg350b88fc40c1sd2shefoh.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDej02KxmEbvn1CUMbPMm_hXciDrcGyKLs',
+    appId: '1:400949463645:ios:5155b67fdc22cebebadbb4',
+    messagingSenderId: '400949463645',
+    projectId: 'chatapp-d4773',
+    storageBucket: 'chatapp-d4773.appspot.com',
+    iosClientId: '400949463645-qqnj5tf2cf5r8pjq9c2bts7irj1tnl1t.apps.googleusercontent.com',
     iosBundleId: 'com.example.chataapproutecourse',
   );
 }
