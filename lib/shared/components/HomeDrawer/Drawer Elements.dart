@@ -32,14 +32,14 @@ Widget Drawerhead(BuildContext context) => Container(
                           color: Theme.of(context).primaryColor, width: 1),
                       shape: BoxShape.circle,
                     ),
-                    child: UserProvider.user?.photo != null
+                    child: UserProvider.user?.photo != ''
                         ? CircleAvatar(
                             backgroundImage: NetworkImage(
                                 UserProvider.user!.photo.toString()),
                           )
                         : const Icon(
                             Icons.account_circle_outlined,
-                            size: 100,
+                            size: 80,
                             color: Colors.black87,
                           ),
                   ),

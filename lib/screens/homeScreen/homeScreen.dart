@@ -71,6 +71,7 @@ class _homeScreenState extends State<homeScreen>
                     (BuildContext context, bool innerBoxIsScrolled) {
                   return <Widget>[
                     const SliverAppBar(
+                      centerTitle: true,
                       pinned: true,
                       floating: true,
                       bottom: TabBar(
@@ -86,11 +87,10 @@ class _homeScreenState extends State<homeScreen>
                           ),
                         ],
                       ),
-                      title: Center(
-                          child: Text(
+                      title: Text(
                         'Chat App',
                         style: TextStyle(fontSize: 25),
-                      )),
+                      ),
                       backgroundColor: Colors.transparent,
                       elevation: 0,
                     ),

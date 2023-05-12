@@ -29,6 +29,7 @@ class ChatScreen extends StatelessWidget implements Connector {
             Scaffold(
               backgroundColor: Colors.transparent,
               appBar: AppBar(
+                centerTitle: true,
                 elevation: 0,
                 backgroundColor: Colors.transparent,
                 title: Text(
